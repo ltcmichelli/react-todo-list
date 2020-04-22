@@ -5,6 +5,7 @@ import { Row, Button, Input } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 
+
 class TodoList extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +17,8 @@ class TodoList extends Component {
 
         this.state = {
             todoList: [],
-            content: ''
+            content: '',
+            markComplete: null
         }
     }
 
@@ -26,12 +28,19 @@ class TodoList extends Component {
             this.setState({
                 todoList: apiData
             })
-            console.log(apiData);
         });
 
     }
 
-    onMarkComplete() {
+    onMarkComplete(id, status) {
+        let targetItem = this.state.todoList.map(function(item){
+            if (item.id === id){
+                item.status = !status;
+            }
+            return item;
+        });      
+        this.setState({ todoList: targetItem });
+        
     }
 
     handleChange(event) {
@@ -60,13 +69,13 @@ class TodoList extends Component {
         let TodoItemList = this.state.todoList;
         return (
             <div>
-                <Input type="reset" placeholder="Input todo item" type="text" value={this.state.value} onChange={this.handleChange} />
+                <Input type="text" placeholder="Input todo item" value={this.state.value} onChange={this.handleChange} />
                 <Button type="submit" onClick={this.onAddItem}>Submit</Button>
                 {TodoItemList.map((todo) => (
                     <div key={todo.id}>
                         <Row>
-                            <Button onClick={this.onMarkComplete}>
-                                <TodoItem key={todo.id} content={todo.content} status={todo.status} />
+                            <Button id="btnMarkComplete" onClick={() => this.onMarkComplete(todo.id, todo.status)}>
+                                <TodoItem key={todo.id} content={todo.content} status={todo.status}/>
                             </Button>
                             <Button type="primary" icon={<CloseOutlined />} size="large" id = {todo.id} onClick={this.onDeleteItem}/>
                         </Row>
