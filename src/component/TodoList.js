@@ -63,7 +63,7 @@ class TodoList extends Component {
                 <Input type="reset" placeholder="Input todo item" type="text" value={this.state.value} onChange={this.handleChange} />
                 <Button type="submit" onClick={this.onAddItem}>Submit</Button>
                 {TodoItemList.map((todo) => (
-                    <div>
+                    <div key={todo.id}>
                         <Row>
                             <Button onClick={this.onMarkComplete}>
                                 <TodoItem key={todo.id} content={todo.content} status={todo.status} />
