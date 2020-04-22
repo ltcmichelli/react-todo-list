@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TodoListApi from '../apis/TodoListApi';
+import TodoItem from './TodoItem';
 
 class TodoList extends Component {
     constructor(props){
@@ -14,19 +15,24 @@ class TodoList extends Component {
 
     componentDidMount() {
         TodoListApi.getTodoList().then((response) => {
-            console.log(response.data);
-            let size = response.data.size;
+            let size = response.data.length;
             this.setState({
                 listSize: size
             })
         })
     }
 
+    initArray(size) {
+        return Array.from(Array(size).keys());
+    }
+
     render() {
+        let TodoItemList = this.initArray(this.state.listSize);
         return (
             <div>
-                {/* <input type = "text" value = {this.state.listContent}></input>
-                {this.state.listContent} */}
+                {TodoItemList.map((value) => (
+                    <TodoItem key={value} />
+                ))}
             </div>
         );
     }
