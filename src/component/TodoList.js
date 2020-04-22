@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import TodoListApi from '../apis/TodoListApi';
 import TodoItem from './TodoItem';
-import { Row, Button, Input, Form } from 'antd';
-import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Button, Input } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 
 class TodoList extends Component {
@@ -12,7 +11,7 @@ class TodoList extends Component {
 
         this.onMarkComplete = this.onMarkComplete.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onAddItem = this.onAddItem.bind(this);
 
         this.state = {
             todoList: [],
@@ -38,8 +37,15 @@ class TodoList extends Component {
         this.setState({ content: event.target.value });
     }
 
-    handleSubmit(event) {
-        console.log(this.state.content);
+    onAddItem(event) {
+        let newList = this.state.todoList;
+        const addItem = {
+            id: parseInt(newList.slice(-1).map(item => item.id)[0]) + 1,
+            content: this.state.content,
+            status: false
+        }
+        newList.push(addItem);
+        this.setState({ todoList: newList });
         event.preventDefault();
     }
 
@@ -47,10 +53,8 @@ class TodoList extends Component {
         let TodoItemList = this.state.todoList;
         return (
             <div>
-                <div>
-                        <Input placeholder="Input todo item" type="text" value={this.state.value} onChange={this.handleChange} />
-                        <Button type="submit" onClick={this.handleSubmit}>Submit</Button>
-                </div>
+                <Input placeholder="Input todo item" type="text" value={this.state.value} onChange={this.handleChange} />
+                <Button type="submit" onClick={this.onAddItem}>Submit</Button>
                 {TodoItemList.map((todo) => (
                     <div>
                         <Row>
