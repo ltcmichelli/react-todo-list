@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Typography } from 'antd';
+
+const { Text } = Typography;
 
 class TodoItem extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             itemContent: this.props.content,
-            itemStatus: false
+            itemStatus:  this.props.status
         }
     }
 
     render() {
         return (
             <div>
-                {this.state.itemContent}
+                <Text delete={this.state.itemStatus}>{this.state.itemContent}</Text>
             </div>
         );
     }
