@@ -6,7 +6,8 @@ class TodoItem extends Component {
         super(props);
 
         this.state = {
-            itemContent: 'Testing'
+            itemContent: this.props.content,
+            itemStatus: false
         }
     }
 

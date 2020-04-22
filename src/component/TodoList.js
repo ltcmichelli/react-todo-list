@@ -8,18 +8,20 @@ class TodoList extends Component {
         super(props);
 
         this.state = {
-            listContent: 0,
-            listSize:0
+            todoList: []
         }
     }
 
     componentDidMount() {
         TodoListApi.getTodoList().then((response) => {
+            let apiData = response.data;
             let size = response.data.length;
             this.setState({
-                listSize: size
+                todoList: apiData
             })
-        })
+            console.log(this.state.todoList);
+        });
+
     }
 
     initArray(size) {
@@ -27,11 +29,11 @@ class TodoList extends Component {
     }
 
     render() {
-        let TodoItemList = this.initArray(this.state.listSize);
+        let TodoItemList = this.state.todoList;
         return (
             <div>
-                {TodoItemList.map((value) => (
-                    <TodoItem key={value} />
+                {TodoItemList.map((todo) => (
+                    <TodoItem key={todo.id} content = {todo.content} status = {todo.status}/>
                 ))}
             </div>
         );
