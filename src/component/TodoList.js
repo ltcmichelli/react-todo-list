@@ -12,6 +12,7 @@ class TodoList extends Component {
         this.onMarkComplete = this.onMarkComplete.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.onAddItem = this.onAddItem.bind(this);
+        this.onDeleteItem = this.onDeleteItem.bind(this);
 
         this.state = {
             todoList: [],
@@ -38,22 +39,28 @@ class TodoList extends Component {
     }
 
     onAddItem(event) {
-        let newList = this.state.todoList;
-        const addItem = {
-            id: parseInt(newList.slice(-1).map(item => item.id)[0]) + 1,
-            content: this.state.content,
-            status: false
-        }
-        newList.push(addItem);
-        this.setState({ todoList: newList });
+            let newList = this.state.todoList;
+            let newId = parseInt(newList.slice(-1).map(item => item.id)[0]) + 1;
+            const addItem = {
+                id: newId.toString(),
+                content: this.state.content,
+                status: false
+            }
+            newList.push(addItem);
+            this.setState({ todoList: newList });
         event.preventDefault();
+    }
+
+    onDeleteItem(event){
+        let filteredList = this.state.todoList.filter(item => item.id !== event.target.id);
+        this.setState({ todoList: filteredList });
     }
 
     render() {
         let TodoItemList = this.state.todoList;
         return (
             <div>
-                <Input placeholder="Input todo item" type="text" value={this.state.value} onChange={this.handleChange} />
+                <Input type="reset" placeholder="Input todo item" type="text" value={this.state.value} onChange={this.handleChange} />
                 <Button type="submit" onClick={this.onAddItem}>Submit</Button>
                 {TodoItemList.map((todo) => (
                     <div>
@@ -61,7 +68,7 @@ class TodoList extends Component {
                             <Button onClick={this.onMarkComplete}>
                                 <TodoItem key={todo.id} content={todo.content} status={todo.status} />
                             </Button>
-                            <Button type="primary" icon={<CloseOutlined />} size="large" />
+                            <Button type="primary" icon={<CloseOutlined />} size="large" id = {todo.id} onClick={this.onDeleteItem}/>
                         </Row>
                     </div>
                 ))}
